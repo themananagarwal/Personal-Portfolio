@@ -35,7 +35,7 @@ const Contact = () => {
             </a>
             
             <a 
-              href="https://www.linkedin.com/in/manan-agarwal" 
+              href="https://www.linkedin.com/in/agarwalmanan" 
               target="_blank"
               rel="noopener noreferrer"
               className="apple-card flex flex-col items-center p-6 hover:scale-105 transition-transform"
