@@ -1,0 +1,70 @@
+
+import React from 'react';
+
+interface Project {
+  title: string;
+  description: string;
+  skills: string[];
+  highlight?: string;
+}
+
+const ProjectCard = ({ project }: { project: Project }) => {
+  return (
+    <div className="apple-card h-full flex flex-col">
+      <h3 className="text-xl font-medium mb-3">{project.title}</h3>
+      <p className="text-apple-darkgray mb-4 flex-grow">{project.description}</p>
+      {project.highlight && (
+        <p className="text-sm font-medium text-apple-blue mb-4">{project.highlight}</p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        {project.skills.map((skill, index) => (
+          <span 
+            key={index} 
+            className="inline-block bg-apple-gray rounded-full px-3 py-1 text-xs font-medium text-apple-darkgray"
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const Projects = () => {
+  const projects: Project[] = [
+    {
+      title: "Data Analytics Hackathon, Conagra Brands",
+      description: "Presented data-driven business proposal to Conagra, utilizing multinomial regression and regression analysis to pinpoint key demographics.",
+      highlight: "Achieved a projected 15% increase in brand engagement across target markets",
+      skills: ["Data Analytics", "Regression Analysis", "Market Segmentation", "Business Strategy"]
+    },
+    {
+      title: "Order Scheduling Management System",
+      description: "Developed an automated system that uses an Economic Order Quantity model, historical inventory data, and historical sales data to generate purchase orders.",
+      highlight: "Resulted in a 2.34% Back-Order ratio in live business settings",
+      skills: ["Operations Analytics", "Inventory Management", "Automation", "Economic Order Quantity"]
+    },
+    {
+      title: "Stock Price Prediction Project",
+      description: "Developed a machine learning model to predict NVIDIA stock prices using historical data, Moving Averages, Bollinger Bands, Unemployment Rate, and Federal Funds Rate.",
+      highlight: "Resulting in a 75% accuracy in predictions",
+      skills: ["Machine Learning", "Time Series Analysis", "Financial Analytics", "Python"]
+    }
+  ];
+
+  return (
+    <section id="projects" className="bg-white">
+      <div className="container">
+        <h2 className="section-title text-center">Project Experience</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {projects.map((project, index) => (
+            <ProjectCard key={index} project={project} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Projects;
