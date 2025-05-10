@@ -14,7 +14,7 @@ const SkillSection = ({ category }: { category: SkillCategory }) => {
         {category.skills.map((skill, index) => (
           <span 
             key={index} 
-            className="inline-block bg-card rounded-full px-4 py-2 text-sm font-medium text-apple-text shadow-sm border border-border"
+            className="inline-block bg-white rounded-full px-4 py-2 text-sm font-medium text-apple-text shadow-sm"
           >
             {skill}
           </span>

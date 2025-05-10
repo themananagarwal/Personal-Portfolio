@@ -3,7 +3,7 @@ import React from 'react';
 
 const Hero = () => {
   return (
-    <section className="pt-32 pb-20 md:pt-40 md:pb-28 bg-background">
+    <section className="pt-32 pb-20 md:pt-40 md:pb-28 bg-apple-gray">
       <div className="container">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-semibold mb-6 animate-fade-in">

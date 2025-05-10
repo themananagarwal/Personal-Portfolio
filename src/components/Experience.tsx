@@ -20,7 +20,7 @@ const ExperienceItem = ({ role, company, period, achievements }: {
       <ul className="space-y-2 text-base">
         {achievements.map((achievement, index) => (
           <li key={index} className="flex">
-            <span className="mr-2 text-apple-blue">•</span>
+            <span className="mr-2">•</span>
             <span>{achievement}</span>
           </li>
         ))}
