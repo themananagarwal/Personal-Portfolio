@@ -19,7 +19,7 @@ const Navbar = () => {
   }, [scrolled]);
 
   return (
-    <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
+    <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-apple-black/90 backdrop-blur-md' : 'bg-transparent'}`}>
       <div className="container flex items-center justify-between h-16">
         <a href="#" className="text-xl font-semibold text-apple-text">
           Manan Agarwal

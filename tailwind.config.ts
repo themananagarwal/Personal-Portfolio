@@ -57,10 +57,13 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				apple: {
-					gray: '#f5f5f7',
-					darkgray: '#86868b',
-					text: '#1d1d1f',
-					blue: '#0071e3'
+					gray: '#1d1d1f', // Dark gray/black for background
+					darkgray: '#86868b', // Keeping the same accent gray 
+					text: '#f5f5f7', // Light text color
+					blue: '#0071e3', // Keeping the same Apple blue
+                    black: '#000000', // Pure black for certain backgrounds
+                    dark: '#101010', // Dark shade for cards
+                    highlight: '#2d2d2d' // Highlight color for hover states
 				}
 			},
 			borderRadius: {

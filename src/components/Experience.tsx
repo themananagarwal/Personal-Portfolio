@@ -17,7 +17,7 @@ const ExperienceItem = ({ role, company, period, achievements }: {
           <span>{period}</span>
         </div>
       </div>
-      <ul className="space-y-2 text-base">
+      <ul className="space-y-2 text-base text-apple-text">
         {achievements.map((achievement, index) => (
           <li key={index} className="flex">
             <span className="mr-2">•</span>
@@ -70,7 +70,7 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="bg-apple-gray">
+    <section id="experience" className="bg-apple-black">
       <div className="container">
         <h2 className="section-title text-center">Professional Experience</h2>
         

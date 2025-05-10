@@ -20,7 +20,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
         {project.skills.map((skill, index) => (
           <span 
             key={index} 
-            className="inline-block bg-apple-gray rounded-full px-3 py-1 text-xs font-medium text-apple-darkgray"
+            className="inline-block bg-apple-black rounded-full px-3 py-1 text-xs font-medium text-apple-darkgray border border-apple-highlight"
           >
             {skill}
           </span>
@@ -53,7 +53,7 @@ const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="bg-white">
+    <section id="projects" className="bg-apple-black">
       <div className="container">
         <h2 className="section-title text-center">Project Experience</h2>
         

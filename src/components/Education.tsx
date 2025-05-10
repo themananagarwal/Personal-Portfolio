@@ -63,7 +63,7 @@ const Education = () => {
   ];
 
   return (
-    <section id="education" className="bg-white">
+    <section id="education" className="bg-apple-black">
       <div className="container">
         <h2 className="section-title text-center">Education</h2>
         

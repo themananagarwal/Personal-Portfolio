@@ -14,7 +14,7 @@ const SkillSection = ({ category }: { category: SkillCategory }) => {
         {category.skills.map((skill, index) => (
           <span 
             key={index} 
-            className="inline-block bg-white rounded-full px-4 py-2 text-sm font-medium text-apple-text shadow-sm"
+            className="inline-block bg-apple-dark rounded-full px-4 py-2 text-sm font-medium text-apple-text shadow-sm border border-apple-highlight"
           >
             {skill}
           </span>
@@ -71,7 +71,7 @@ const Skills = () => {
                   <svg className="h-5 w-5 text-apple-blue mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span>{cert}</span>
+                  <span className="text-apple-text">{cert}</span>
                 </div>
               ))}
             </div>
