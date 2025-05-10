@@ -57,10 +57,10 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				apple: {
-					gray: '#f5f5f7',
-					darkgray: '#86868b',
-					text: '#1d1d1f',
-					blue: '#0071e3'
+					gray: '#1A1F2C',
+					darkgray: '#8A8A8D',
+					text: '#F5F5F7',
+					blue: '#0A84FF'
 				}
 			},
 			borderRadius: {
