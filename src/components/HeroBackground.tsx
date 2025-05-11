@@ -1,70 +1,101 @@
 
-import React, { useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere } from '@react-three/drei';
-import * as THREE from 'three';
-
-const Particles = ({ count = 200 }) => {
-  const mesh = useRef<THREE.InstancedMesh>(null);
-  const light = useRef<THREE.PointLight>(null);
-  const dummy = useRef(new THREE.Object3D()).current;
-
-  // Create instances on mount
-  useFrame((state) => {
-    if (light.current) {
-      light.current.position.x = Math.sin(state.clock.getElapsedTime() * 0.4) * 4;
-      light.current.position.y = Math.cos(state.clock.getElapsedTime() * 0.4) * 4;
-    }
-    
-    if (mesh.current) {
-      for (let i = 0; i < count; i++) {
-        const time = state.clock.getElapsedTime();
-        const factor = 10 + (i % 10);
-        
-        // Calculate position for each particle
-        const x = Math.sin(i * 0.1 + time * 0.1) * factor * 0.05;
-        const y = Math.cos(i * 0.1 + time * 0.1) * factor * 0.05;
-        const z = Math.sin(i * 0.1 + time * 0.1) * factor * 0.05;
-        
-        dummy.position.set(x, y, z);
-        dummy.updateMatrix();
-        mesh.current.setMatrixAt(i, dummy.matrix);
-      }
-      
-      mesh.current.instanceMatrix.needsUpdate = true;
-      mesh.current.rotation.x = mesh.current.rotation.y += 0.001;
-    }
-  });
-
-  return (
-    <>
-      <pointLight ref={light} distance={10} intensity={2} color="#0071e3" />
-      <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
-        <sphereGeometry args={[0.05, 8, 8]} />
-        <meshStandardMaterial color="#ffffff" />
-      </instancedMesh>
-    </>
-  );
-};
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 
 const HeroBackground = () => {
+  const bgRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (!bgRef.current) return;
+    
+    // Create animated gradient background
+    const colors = ["#0060df", "#0071e3", "#0080ff", "#2b3bff"];
+    let currentIndex = 0;
+    
+    const animateGradient = () => {
+      if (!bgRef.current) return;
+      
+      const nextIndex = (currentIndex + 1) % colors.length;
+      
+      gsap.to(bgRef.current, {
+        background: `radial-gradient(circle at ${Math.random() * 100}% ${Math.random() * 100}%, 
+                    ${colors[currentIndex]} 0%, 
+                    ${colors[nextIndex]} 100%)`,
+        duration: 4,
+        ease: "power1.inOut",
+        onComplete: () => {
+          currentIndex = nextIndex;
+          animateGradient();
+        }
+      });
+    };
+    
+    // Initial animation
+    gsap.fromTo(bgRef.current, 
+      { 
+        opacity: 0,
+        background: `radial-gradient(circle at 50% 50%, ${colors[0]} 0%, ${colors[1]} 100%)` 
+      },
+      { 
+        opacity: 0.7, 
+        duration: 1.5,
+        onComplete: animateGradient
+      }
+    );
+    
+    // Create floating particles
+    const particles = Array.from({ length: 20 }).map(() => {
+      const particle = document.createElement('div');
+      particle.className = 'absolute rounded-full bg-white opacity-20';
+      
+      // Random size between 5px and 15px
+      const size = 5 + Math.random() * 10;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      
+      // Random position
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      
+      if (bgRef.current) {
+        bgRef.current.appendChild(particle);
+      }
+      
+      return particle;
+    });
+    
+    // Animate particles
+    particles.forEach(particle => {
+      gsap.to(particle, {
+        x: `${-50 + Math.random() * 100}px`,
+        y: `${-50 + Math.random() * 100}px`,
+        duration: 5 + Math.random() * 10,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+    });
+    
+    return () => {
+      // Cleanup particles
+      particles.forEach(particle => {
+        if (bgRef.current && bgRef.current.contains(particle)) {
+          bgRef.current.removeChild(particle);
+        }
+      });
+    };
+  }, []);
+  
   return (
-    <div className="absolute inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-        <ambientLight intensity={0.3} />
-        <Particles />
-        <Sphere args={[1.5, 32, 32]} position={[0, 0, 0]}>
-          <meshStandardMaterial 
-            color="#0071e3" 
-            wireframe 
-            transparent
-            opacity={0.15}
-            emissive="#0071e3"
-            emissiveIntensity={0.5}
-          />
-        </Sphere>
-        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
-      </Canvas>
+    <div className="absolute inset-0 -z-10 overflow-hidden">
+      <div 
+        ref={bgRef}
+        className="absolute inset-0 opacity-0 transition-all duration-500"
+        style={{ filter: 'blur(80px)' }}
+      ></div>
+      
+      {/* Overlay to reduce background intensity */}
+      <div className="absolute inset-0 bg-apple-black bg-opacity-60"></div>
     </div>
   );
 };
