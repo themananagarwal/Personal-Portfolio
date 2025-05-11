@@ -7,7 +7,9 @@ import * as THREE from 'three';
 const Particles = ({ count = 200 }) => {
   const mesh = useRef<THREE.InstancedMesh>(null);
   const light = useRef<THREE.PointLight>(null);
+  const dummy = useRef(new THREE.Object3D()).current;
 
+  // Create instances on mount
   useFrame((state) => {
     if (light.current) {
       light.current.position.x = Math.sin(state.clock.getElapsedTime() * 0.4) * 4;
@@ -15,6 +17,21 @@ const Particles = ({ count = 200 }) => {
     }
     
     if (mesh.current) {
+      for (let i = 0; i < count; i++) {
+        const time = state.clock.getElapsedTime();
+        const factor = 10 + (i % 10);
+        
+        // Calculate position for each particle
+        const x = Math.sin(i * 0.1 + time * 0.1) * factor * 0.05;
+        const y = Math.cos(i * 0.1 + time * 0.1) * factor * 0.05;
+        const z = Math.sin(i * 0.1 + time * 0.1) * factor * 0.05;
+        
+        dummy.position.set(x, y, z);
+        dummy.updateMatrix();
+        mesh.current.setMatrixAt(i, dummy.matrix);
+      }
+      
+      mesh.current.instanceMatrix.needsUpdate = true;
       mesh.current.rotation.x = mesh.current.rotation.y += 0.001;
     }
   });
@@ -23,7 +40,7 @@ const Particles = ({ count = 200 }) => {
     <>
       <pointLight ref={light} distance={10} intensity={2} color="#0071e3" />
       <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
-        <sphereGeometry args={[0.05, 32, 32]} />
+        <sphereGeometry args={[0.05, 8, 8]} />
         <meshStandardMaterial color="#ffffff" />
       </instancedMesh>
     </>

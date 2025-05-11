@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { CuboidIcon, RotateIcon, Scale3dIcon } from 'lucide-react';
+import { CuboidIcon, Rotate3dIcon, Scale3dIcon } from 'lucide-react';
 
 const About = () => {
   const titleRef = useScrollAnimation();
@@ -54,7 +54,7 @@ const About = () => {
                   className="apple-card hover:scale-105 transition-transform hover:shadow-apple-blue/20 hover:shadow-lg"
                 >
                   <div className="flex items-center justify-center mb-3">
-                    <RotateIcon className="h-8 w-8 text-apple-blue" />
+                    <Rotate3dIcon className="h-8 w-8 text-apple-blue" />
                   </div>
                   <h4 className="font-medium text-lg mb-2 text-center">Machine Learning</h4>
                   <p className="text-apple-darkgray">Develop predictive models to solve business problems and identify opportunities.</p>
