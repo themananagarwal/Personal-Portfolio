@@ -1,26 +1,52 @@
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
-const ExperienceItem = ({ role, company, period, achievements }: { 
+interface ExperienceData {
   role: string; 
   company: string; 
   period: string; 
-  achievements: string[] 
+  achievements: string[];
+}
+
+const ExperienceItem = ({ experience, index }: { 
+  experience: ExperienceData;
+  index: number;
 }) => {
+  const [expanded, setExpanded] = useState(false);
+  const itemRef = useScrollAnimation({ delay: index * 0.1 });
+  
   return (
-    <div className="mb-12">
-      <div className="mb-3">
-        <h3 className="text-xl font-medium">{role}</h3>
-        <div className="flex flex-col md:flex-row md:items-center text-apple-darkgray mb-2">
-          <span className="font-medium">{company}</span>
-          <span className="hidden md:inline mx-2">•</span>
-          <span>{period}</span>
+    <div 
+      ref={itemRef}
+      className={`mb-12 apple-card hover:border-apple-blue transition-all duration-300 ${expanded ? 'border-apple-blue' : ''}`}
+      onClick={() => setExpanded(!expanded)}
+    >
+      <div className="mb-3 cursor-pointer flex justify-between items-center">
+        <div>
+          <h3 className="text-xl font-medium">{experience.role}</h3>
+          <div className="flex flex-col md:flex-row md:items-center text-apple-darkgray mb-2">
+            <span className="font-medium">{experience.company}</span>
+            <span className="hidden md:inline mx-2">•</span>
+            <span>{experience.period}</span>
+          </div>
+        </div>
+        <div className="text-apple-blue">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className={`h-6 w-6 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
       </div>
-      <ul className="space-y-2 text-base text-apple-text">
-        {achievements.map((achievement, index) => (
-          <li key={index} className="flex">
-            <span className="mr-2">•</span>
+      <ul className={`space-y-2 text-base text-apple-text overflow-hidden transition-all duration-500 ${expanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+        {experience.achievements.map((achievement, i) => (
+          <li key={i} className="flex">
+            <span className="mr-2 text-apple-blue">•</span>
             <span>{achievement}</span>
           </li>
         ))}
@@ -30,6 +56,8 @@ const ExperienceItem = ({ role, company, period, achievements }: {
 };
 
 const Experience = () => {
+  const titleRef = useScrollAnimation();
+  
   const experiences = [
     {
       role: "Graduate Teaching Assistant",
@@ -72,16 +100,14 @@ const Experience = () => {
   return (
     <section id="experience" className="bg-apple-black">
       <div className="container">
-        <h2 className="section-title text-center">Professional Experience</h2>
+        <h2 ref={titleRef} className="section-title text-center">Professional Experience</h2>
         
         <div className="max-w-3xl mx-auto">
           {experiences.map((exp, index) => (
             <ExperienceItem 
               key={index}
-              role={exp.role}
-              company={exp.company}
-              period={exp.period}
-              achievements={exp.achievements}
+              experience={exp}
+              index={index}
             />
           ))}
         </div>

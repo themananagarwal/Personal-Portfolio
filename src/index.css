@@ -66,6 +66,24 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2d2d2d;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0071e3;
+}
+
 /* Apple-inspired section spacing */
 section {
   @apply py-16 md:py-24;
@@ -86,4 +104,51 @@ section {
 
 .apple-button-secondary {
   @apply inline-flex items-center justify-center rounded-full px-6 py-2 text-sm font-medium text-apple-blue transition-colors bg-apple-dark border border-apple-blue hover:bg-apple-highlight;
+}
+
+/* Style for animated elements on scroll */
+.reveal {
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Floating animation for 3D elements */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Glow animation */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 113, 227, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 113, 227, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 113, 227, 0.2);
+  }
+}
+
+.glow-effect:hover {
+  animation: glow 2s infinite;
 }

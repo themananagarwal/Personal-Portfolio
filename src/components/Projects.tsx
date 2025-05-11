@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 interface Project {
   title: string;
@@ -8,19 +9,35 @@ interface Project {
   highlight?: string;
 }
 
-const ProjectCard = ({ project }: { project: Project }) => {
+const ProjectCard = ({ project, index }: { project: Project, index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const projectRef = useScrollAnimation({ delay: index * 0.2 });
+  
   return (
-    <div className="apple-card h-full flex flex-col">
+    <div 
+      ref={projectRef}
+      className={`apple-card h-full flex flex-col transform transition-all duration-500 ${
+        isHovered ? 'scale-105 shadow-lg shadow-apple-blue/20' : ''
+      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <h3 className="text-xl font-medium mb-3">{project.title}</h3>
       <p className="text-apple-darkgray mb-4 flex-grow">{project.description}</p>
       {project.highlight && (
-        <p className="text-sm font-medium text-apple-blue mb-4">{project.highlight}</p>
+        <p className={`text-sm font-medium mb-4 transition-colors duration-300 ${
+          isHovered ? 'text-white' : 'text-apple-blue'
+        }`}>
+          {project.highlight}
+        </p>
       )}
       <div className="flex flex-wrap gap-2">
-        {project.skills.map((skill, index) => (
+        {project.skills.map((skill, i) => (
           <span 
-            key={index} 
-            className="inline-block bg-apple-black rounded-full px-3 py-1 text-xs font-medium text-apple-darkgray border border-apple-highlight"
+            key={i} 
+            className={`inline-block bg-apple-black rounded-full px-3 py-1 text-xs font-medium transition-colors duration-300 ${
+              isHovered ? 'bg-apple-blue text-white' : 'text-apple-darkgray border border-apple-highlight'
+            }`}
           >
             {skill}
           </span>
@@ -31,6 +48,8 @@ const ProjectCard = ({ project }: { project: Project }) => {
 };
 
 const Projects = () => {
+  const titleRef = useScrollAnimation();
+  
   const projects: Project[] = [
     {
       title: "Data Analytics Hackathon, Conagra Brands",
@@ -55,11 +74,11 @@ const Projects = () => {
   return (
     <section id="projects" className="bg-apple-black">
       <div className="container">
-        <h2 className="section-title text-center">Project Experience</h2>
+        <h2 ref={titleRef} className="section-title text-center">Project Experience</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <ProjectCard key={index} project={project} />
+            <ProjectCard key={index} project={project} index={index} />
           ))}
         </div>
       </div>
