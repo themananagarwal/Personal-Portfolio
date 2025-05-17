@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { Card } from "@/components/ui/card";
 
 interface Education {
   institution: string;
@@ -10,46 +10,61 @@ interface Education {
   gpa: string;
   details?: string[];
   courses?: string[];
-  logoUrl: string; // Added for university logos
+  logoUrl: string;
 }
 
 const EducationCard = ({ education }: { education: Education }) => {
   return (
-    <div className="mb-8 relative">
-      <div className="flex flex-col md:flex-row justify-between mb-4">
-        <div>
-          <h3 className="text-xl font-medium">{education.institution}</h3>
-          <p className="text-lg">{education.degree}</p>
+    <Card className="mb-8 relative overflow-hidden border border-apple-highlight bg-apple-dark p-8">
+      <div 
+        className="absolute top-0 right-0 opacity-[0.15] z-0" 
+        style={{
+          backgroundImage: `url(${education.logoUrl})`,
+          backgroundSize: 'contain',
+          backgroundPosition: 'right top',
+          backgroundRepeat: 'no-repeat',
+          filter: 'grayscale(0.3)',
+          width: '50%',
+          height: '100%'
+        }}
+      />
+      
+      <div className="relative z-10">
+        <div className="flex flex-col md:flex-row justify-between mb-4">
+          <div>
+            <h3 className="text-xl font-medium">{education.institution}</h3>
+            <p className="text-lg">{education.degree}</p>
+          </div>
+          <div className="text-right mt-2 md:mt-0">
+            <p className="text-apple-darkgray">{education.graduation}</p>
+            <p className="font-medium">GPA: {education.gpa}</p>
+          </div>
         </div>
-        <div className="text-right mt-2 md:mt-0">
-          <p className="text-apple-darkgray">{education.graduation}</p>
-          <p className="font-medium">GPA: {education.gpa}</p>
-        </div>
+        
+        {education.details && education.details.length > 0 && (
+          <div className="mb-4">
+            <ul className="space-y-1">
+              {education.details.map((detail, index) => (
+                <li key={index} className="text-apple-darkgray">{detail}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
+        {education.courses && education.courses.length > 0 && (
+          <div>
+            <h4 className="text-sm font-medium mb-2">Relevant Coursework</h4>
+            <p className="text-apple-darkgray">{education.courses.join(", ")}</p>
+          </div>
+        )}
       </div>
-      
-      {education.details && education.details.length > 0 && (
-        <div className="mb-4">
-          <ul className="space-y-1">
-            {education.details.map((detail, index) => (
-              <li key={index} className="text-apple-darkgray">{detail}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      
-      {education.courses && education.courses.length > 0 && (
-        <div>
-          <h4 className="text-sm font-medium mb-2">Relevant Coursework</h4>
-          <p className="text-apple-darkgray">{education.courses.join(", ")}</p>
-        </div>
-      )}
-    </div>
+    </Card>
   );
 };
 
 const Education = () => {
   const titleRef = useScrollAnimation();
-  const tabsRef = useScrollAnimation({ delay: 0.2 });
+  const contentRef = useScrollAnimation({ delay: 0.2 });
   
   const educationHistory: Education[] = [
     {
@@ -75,36 +90,10 @@ const Education = () => {
       <div className="container">
         <h2 ref={titleRef} className="section-title text-center">Education</h2>
         
-        <div ref={tabsRef} className="max-w-3xl mx-auto">
-          <Tabs defaultValue="utd" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="utd" className="data-[state=active]:text-apple-blue">UT Dallas</TabsTrigger>
-              <TabsTrigger value="vit" className="data-[state=active]:text-apple-blue">VIT Vellore</TabsTrigger>
-            </TabsList>
-            
-            {educationHistory.map((edu, index) => (
-              <TabsContent 
-                key={index} 
-                value={index === 0 ? "utd" : "vit"}
-                className="relative overflow-hidden apple-card border border-apple-highlight p-8"
-              >
-                <div 
-                  className="absolute inset-0 opacity-[0.08] z-0" 
-                  style={{
-                    backgroundImage: `url(${edu.logoUrl})`,
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    filter: 'grayscale(0.5)',
-                    animation: 'pulse 8s infinite ease-in-out'
-                  }}
-                />
-                <div className="relative z-10">
-                  <EducationCard education={edu} />
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
+        <div ref={contentRef} className="max-w-3xl mx-auto space-y-6">
+          {educationHistory.map((edu, index) => (
+            <EducationCard key={index} education={edu} />
+          ))}
         </div>
       </div>
     </section>
