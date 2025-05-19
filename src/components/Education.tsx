@@ -74,7 +74,7 @@ const Education = () => {
       gpa: "4.0",
       details: ["Teaching Assistant Scholarship"],
       courses: ["Advanced Statistics", "Time Series and Econometrics", "Predictive Analytics", "Prescriptive Analytics", "Operations Analytics", "Customer Analytics and Insights"],
-      logoUrl: "https://utdallas.edu/brand/files/2023/06/UTD_shield_orange_gray.svg"
+      logoUrl: "/lovable-uploads/1da29f58-0a49-4d4c-b598-5c9c0d58397d.png"
     },
     {
       institution: "Vellore Institute of Technology, Vellore",
