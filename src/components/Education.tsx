@@ -74,7 +74,7 @@ const Education = () => {
       gpa: "4.0",
       details: ["Teaching Assistant Scholarship"],
       courses: ["Advanced Statistics", "Time Series and Econometrics", "Predictive Analytics", "Prescriptive Analytics", "Operations Analytics", "Customer Analytics and Insights"],
-      logoUrl: "/lovable-uploads/1da29f58-0a49-4d4c-b598-5c9c0d58397d.png"
+      logoUrl: "/lovable-uploads/d22eb8cd-a6e5-43a8-ab9c-ceafc685f7d7.png"
     },
     {
       institution: "Vellore Institute of Technology, Vellore",
