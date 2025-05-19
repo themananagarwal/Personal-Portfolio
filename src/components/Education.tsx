@@ -21,7 +21,7 @@ const EducationCard = ({ education }: { education: Education }) => {
         style={{
           backgroundImage: `url(${education.logoUrl})`,
           backgroundSize: 'contain',
-          backgroundPosition: 'right top',
+          backgroundPosition: 'center right',
           backgroundRepeat: 'no-repeat',
           filter: 'grayscale(1) brightness(1.8)',
           width: '65%',
