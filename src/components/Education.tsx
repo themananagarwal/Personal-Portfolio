@@ -23,7 +23,7 @@ const EducationCard = ({ education }: { education: Education }) => {
           backgroundSize: 'contain',
           backgroundPosition: 'center right',
           backgroundRepeat: 'no-repeat',
-          filter: 'grayscale(1) brightness(1.8)',
+          filter: 'grayscale(1) brightness(2.5)',
           width: '65%',
           height: '110%'
         }}
