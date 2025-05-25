@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { Card } from "@/components/ui/card";
@@ -13,25 +14,18 @@ interface Education {
 }
 
 const EducationCard = ({ education }: { education: Education }) => {
-  const utdLogoStyle = education.institution === "The University of Texas at Dallas" ? {
-    right: '10%', // Adjust this value to change the UTD logo's horizontal position
-  } : {};
-
   return (
     <Card className="mb-8 relative overflow-hidden border border-apple-highlight bg-apple-dark p-8">
       <div 
         className="absolute top-0 right-0 opacity-[0.15] z-0" 
         style={{
-          ...{
-            backgroundImage: `url(${education.logoUrl})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center right',
-            backgroundRepeat: 'no-repeat',
-            filter: 'grayscale(1) brightness(6.0)',
-            width: '65%',
-            height: '110%'
-          },
-          ...utdLogoStyle,
+          backgroundImage: `url(${education.logoUrl})`,
+          backgroundSize: 'contain',
+          backgroundPosition: 'center right',
+          backgroundRepeat: 'no-repeat',
+          filter: 'grayscale(1) brightness(6.0)',
+          width: '65%',
+          height: '110%'
         }}
       />
       
@@ -80,7 +74,7 @@ const Education = () => {
       gpa: "4.0",
       details: ["Teaching Assistant Scholarship"],
       courses: ["Advanced Statistics", "Time Series and Econometrics", "Predictive Analytics", "Prescriptive Analytics", "Operations Analytics", "Customer Analytics and Insights"],
-      logoUrl: "/Users/mananagarwal/Downloads/Untitled design.png"
+      logoUrl: "/lovable-uploads/b23626ff-c7ea-4d2f-a5c4-7ccb51677a68.png"
     },
     {
       institution: "Vellore Institute of Technology, Vellore",
