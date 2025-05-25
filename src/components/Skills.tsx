@@ -111,7 +111,7 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="bg-apple-gray">
+    <section id="skills" className="bg-apple-black">
       <div className="container">
         <h2 ref={titleRef} className="section-title text-center">Skills & Certifications</h2>
         

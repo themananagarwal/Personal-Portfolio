@@ -82,7 +82,7 @@ const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="bg-apple-black">
+    <section id="projects" className="bg-apple-gray">
       <div className="container">
         <h2 ref={titleRef} className="section-title text-center">Project Experience</h2>
         

@@ -4,6 +4,7 @@ import HeroBackground from './HeroBackground';
 import gsap from 'gsap';
 
 const Hero = () => {
+  const nameRef = useRef<HTMLHeadingElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
@@ -11,12 +12,18 @@ const Hero = () => {
   useEffect(() => {
     const tl = gsap.timeline();
     
-    tl.from(titleRef.current, {
+    tl.from(nameRef.current, {
+      y: 30,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    })
+    .from(titleRef.current, {
       y: 20,
       opacity: 0,
       duration: 0.8,
       ease: "power3.out"
-    })
+    }, "-=0.6")
     .from(subtitleRef.current, {
       y: 20,
       opacity: 0,
@@ -38,11 +45,17 @@ const Hero = () => {
       <div className="container z-10">
         <div className="max-w-4xl mx-auto text-center relative">
           <h1 
+            ref={nameRef}
+            className="text-5xl md:text-7xl font-bold mb-4 text-apple-text bg-gradient-to-r from-apple-blue via-white to-apple-blue bg-clip-text text-transparent animate-pulse"
+          >
+            Manan Agarwal
+          </h1>
+          <h2 
             ref={titleRef}
-            className="text-4xl md:text-6xl font-semibold mb-6 text-apple-text"
+            className="text-3xl md:text-5xl font-semibold mb-6 text-apple-text"
           >
             Business Analytics Professional
-          </h1>
+          </h2>
           <p 
             ref={subtitleRef}
             className="text-xl md:text-2xl text-apple-darkgray mb-10"

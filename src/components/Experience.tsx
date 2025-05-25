@@ -98,7 +98,7 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="bg-apple-black">
+    <section id="experience" className="bg-apple-gray">
       <div className="container">
         <h2 ref={titleRef} className="section-title text-center">Professional Experience</h2>
         
