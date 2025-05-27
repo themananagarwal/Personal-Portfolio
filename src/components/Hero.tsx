@@ -50,9 +50,11 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center relative">
           <h1 
             ref={nameRef}
-            className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-2xl"
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-tight"
             style={{
-              textShadow: '0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 255, 255, 0.1)'
+              textShadow: '0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 255, 255, 0.1)',
+              lineHeight: '1.1',
+              paddingBottom: '0.1em'
             }}
           >
             Manan Agarwal

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { Link } from 'react-router-dom';
 
@@ -56,6 +56,18 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
 
 const Projects = () => {
   const titleRef = useScrollAnimation();
+  
+  useEffect(() => {
+    // Check if we need to scroll to projects section
+    if (window.location.hash === '#projects') {
+      const projectsSection = document.getElementById('projects');
+      if (projectsSection) {
+        setTimeout(() => {
+          projectsSection.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, []);
   
   const projects: Project[] = [
     {
