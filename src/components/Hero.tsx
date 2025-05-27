@@ -12,22 +12,22 @@ const Hero = () => {
   useEffect(() => {
     const tl = gsap.timeline();
     
-    // Apple-inspired fade-in animation for the name
+    // Extended Apple-inspired fade-in animation for the name with more emphasis
     tl.fromTo(nameRef.current, {
-      y: 40,
+      y: 60,
       opacity: 0,
     }, {
       y: 0,
       opacity: 1,
-      duration: 1.8,
+      duration: 2.5,
       ease: "power4.out"
     })
     .from(titleRef.current, {
       y: 20,
       opacity: 0,
-      duration: 0.8,
+      duration: 1.0,
       ease: "power3.out"
-    }, "-=1.2")
+    }, "-=1.5")
     .from(subtitleRef.current, {
       y: 20,
       opacity: 0,
@@ -50,7 +50,10 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center relative">
           <h1 
             ref={nameRef}
-            className="text-5xl md:text-7xl font-bold mb-4 text-apple-text bg-gradient-to-r from-apple-blue via-white to-apple-blue bg-clip-text text-transparent"
+            className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-2xl"
+            style={{
+              textShadow: '0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 255, 255, 0.1)'
+            }}
           >
             Manan Agarwal
           </h1>
