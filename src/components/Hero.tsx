@@ -1,6 +1,7 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import HeroBackground from './HeroBackground';
+import NebulaBackground from './NebulaBackground';
 import gsap from 'gsap';
 
 const Hero = () => {
@@ -8,6 +9,7 @@ const Hero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
+  const [isNameHovered, setIsNameHovered] = useState(false);
   
   useEffect(() => {
     const tl = gsap.timeline();
@@ -43,19 +45,46 @@ const Hero = () => {
     
   }, []);
 
+  const handleNameHover = () => {
+    setIsNameHovered(true);
+    if (nameRef.current) {
+      gsap.to(nameRef.current, {
+        scale: 1.05,
+        textShadow: '0 0 60px rgba(255, 255, 255, 0.5), 0 0 120px rgba(0, 170, 255, 0.3)',
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    }
+  };
+
+  const handleNameLeave = () => {
+    setIsNameHovered(false);
+    if (nameRef.current) {
+      gsap.to(nameRef.current, {
+        scale: 1,
+        textShadow: '0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 255, 255, 0.1)',
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    }
+  };
+
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden bg-apple-black">
       <HeroBackground />
+      <NebulaBackground isHovered={isNameHovered} />
       <div className="container z-10">
         <div className="max-w-4xl mx-auto text-center relative">
           <h1 
             ref={nameRef}
-            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-tight"
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent drop-shadow-2xl leading-tight cursor-pointer transition-all duration-300"
             style={{
               textShadow: '0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 255, 255, 0.1)',
               lineHeight: '1.1',
               paddingBottom: '0.1em'
             }}
+            onMouseEnter={handleNameHover}
+            onMouseLeave={handleNameLeave}
           >
             Manan Agarwal
           </h1>
