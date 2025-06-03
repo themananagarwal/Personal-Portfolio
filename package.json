@@ -3,22 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-<<<<<<< HEAD
-=======
   "homepage": "https://github.com/themananagarwal/Personal-Portfolio",
->>>>>>> gh-pages
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-<<<<<<< HEAD
-    "preview": "vite preview"
-=======
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
->>>>>>> gh-pages
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -50,10 +43,7 @@
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.4",
     "@react-three/drei": "^9.122.0",
-<<<<<<< HEAD
-=======
     "@react-three/fiber": "^8.18.0",
->>>>>>> gh-pages
     "@tanstack/react-query": "^5.56.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -89,10 +79,7 @@
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
-<<<<<<< HEAD
-=======
     "gh-pages": "^6.3.0",
->>>>>>> gh-pages
     "globals": "^15.9.0",
     "lovable-tagger": "^1.1.7",
     "postcss": "^8.4.47",
