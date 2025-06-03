@@ -1,47 +1,42 @@
 // src/components/NebulaName.tsx
 
-import React, { useRef, useState } from 'react';
+// src/components/NebulaName.tsx
+
+import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial, OrbitControls } from '@react-three/drei';
+import { OrbitControls, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
 
-const ParticleBurst = () => {
-  const ref = useRef<THREE.Points>(null);
-  const [burstDone, setBurstDone] = useState(false);
+const NebulaParticles = () => {
+  const mesh = useRef<THREE.Points>(null);
 
   useFrame(() => {
-    if (!burstDone && ref.current) {
-      const positions = (ref.current.geometry.attributes.position as THREE.BufferAttribute).array as Float32Array;
-      for (let i = 0; i < positions.length; i += 3) {
-        positions[i] += (Math.random() - 0.5) * 0.5;
-        positions[i + 1] += (Math.random() - 0.5) * 0.5;
-        positions[i + 2] += (Math.random() - 0.5) * 0.5;
-      }
-      ref.current.geometry.attributes.position.needsUpdate = true;
-      setBurstDone(true);
+    if (mesh.current) {
+      mesh.current.rotation.y += 0.0005;
+      mesh.current.rotation.x += 0.0003;
     }
   });
 
-  const particles = new Float32Array(1500 * 3);
-  for (let i = 0; i < particles.length; i++) {
-    particles[i] = (Math.random() - 0.5) * 5;
+  const count = 2000;
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 10;
   }
 
   return (
-    <points ref={ref} position={[0, 0, 0]}>
-      <bufferGeometry attach="geometry">
+    <points ref={mesh}>
+      <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={particles.length / 3}
-          array={particles}
+          count={count}
+          array={positions}
           itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial
-        attach="material"
         color="#80dfff"
-        size={0.04}
+        size={0.07}
         sizeAttenuation
         depthWrite={false}
         transparent
@@ -54,25 +49,37 @@ const NebulaName = () => {
   const nameRef = useRef<HTMLHeadingElement>(null);
 
   const handleHover = () => {
-    gsap.to(nameRef.current, { scale: 1.1, duration: 0.3, ease: 'power2.out' });
+    gsap.to(nameRef.current, {
+      scale: 1.1,
+      textShadow: '0 0 20px #80dfff',
+      duration: 0.4,
+      ease: 'power2.out',
+    });
   };
 
   const handleLeave = () => {
-    gsap.to(nameRef.current, { scale: 1.0, duration: 0.3, ease: 'power2.out' });
+    gsap.to(nameRef.current, {
+      scale: 1.0,
+      textShadow: '0 0 10px #80dfff',
+      duration: 0.4,
+      ease: 'power2.out',
+    });
   };
 
   return (
     <div className="w-full h-screen bg-black flex items-center justify-center relative overflow-hidden">
-      <Canvas camera={{ position: [0, 0, 4], fov: 75 }}>
+      <Canvas camera={{ position: [0, 0, 6], fov: 75 }}>
         <ambientLight intensity={0.5} />
-        <ParticleBurst />
+        <NebulaParticles />
+        <Sparkles count={100} scale={[8, 8, 8]} size={2} speed={0.4} color="#80dfff" />
         <OrbitControls enableZoom={false} enablePan={false} />
       </Canvas>
       <h1
         ref={nameRef}
         onMouseEnter={handleHover}
         onMouseLeave={handleLeave}
-        className="absolute text-white text-4xl sm:text-6xl font-bold tracking-wide drop-shadow-lg"
+        className="absolute text-white text-4xl sm:text-6xl font-bold tracking-wide text-center"
+        style={{ textShadow: '0 0 10px #80dfff', transition: 'all 0.3s ease-in-out' }}
       >
         Manan Agarwal
       </h1>

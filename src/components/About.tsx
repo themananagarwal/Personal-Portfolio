@@ -2,6 +2,11 @@
 import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { CuboidIcon, Rotate3dIcon, Scale3dIcon } from 'lucide-react';
+import NebulaName from "@/components/NebulaName";
+
+function Home() {
+  return <NebulaName />;
+}
 
 const About = () => {
   const titleRef = useScrollAnimation();
