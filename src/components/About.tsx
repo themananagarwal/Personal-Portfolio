@@ -2,7 +2,6 @@
 import React from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { CuboidIcon, Rotate3dIcon, Scale3dIcon } from 'lucide-react';
-import NebulaName from '@/components/NebulaName';
 
 const About = () => {
   const titleRef = useScrollAnimation();
@@ -19,7 +18,6 @@ const About = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto">
           <h2 ref={titleRef} className="section-title text-center">About Me</h2>
-          <NebulaName />
           
           <div className="space-y-6 text-lg">
             <p ref={text1Ref} className="text-apple-text">
