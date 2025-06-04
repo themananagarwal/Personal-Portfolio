@@ -13,10 +13,9 @@ const NebulaParticles = ({ isHovered, animationPhase }: NebulaParticlesProps) =>
   const ref = useRef<THREE.Points>(null);
   const particleCount = 2000;
   
-  const [positions, colors, scales] = useMemo(() => {
+  const [positions, colors] = useMemo(() => {
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
-    const scales = new Float32Array(particleCount);
     
     // Create spiral galaxy-like distribution
     for (let i = 0; i < particleCount; i++) {
@@ -49,11 +48,9 @@ const NebulaParticles = ({ isHovered, animationPhase }: NebulaParticlesProps) =>
         colors[i3 + 1] = 0.9 + Math.random() * 0.1; // G
         colors[i3 + 2] = 1.0; // B
       }
-      
-      scales[i] = Math.random() * 0.5 + 0.5;
     }
     
-    return [positions, colors, scales];
+    return [positions, colors];
   }, []);
 
   useFrame((state) => {
@@ -105,7 +102,7 @@ const NebulaParticles = ({ isHovered, animationPhase }: NebulaParticlesProps) =>
   });
 
   return (
-    <Points ref={ref} positions={positions} colors={colors} scales={scales}>
+    <Points ref={ref} positions={positions} colors={colors}>
       <PointMaterial
         transparent
         opacity={0.8}
