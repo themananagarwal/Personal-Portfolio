@@ -14,7 +14,7 @@ const NebulaBackground = ({ isHovered }: NebulaBackgroundProps) => {
 
     // Create particles
     const particleElements: HTMLElement[] = [];
-    const particleCount = 80;
+    const particleCount = 240;
 
     // Clear any existing particles
     containerRef.current.innerHTML = '';
@@ -55,9 +55,9 @@ const NebulaBackground = ({ isHovered }: NebulaBackgroundProps) => {
     // Burst animation
     const tl = gsap.timeline();
 
-    // Initial burst - particles explode outward
+    // Initial burst - particles explode outward and stay expanded
     tl.to(particleElements, {
-      duration: 1.5,
+      duration: 2.0,
       opacity: 1,
       x: () => (Math.random() - 0.5) * 800,
       y: () => (Math.random() - 0.5) * 600,
@@ -68,15 +68,6 @@ const NebulaBackground = ({ isHovered }: NebulaBackgroundProps) => {
         from: "center"
       }
     })
-    // Settle into nebula formation
-    .to(particleElements, {
-      duration: 1,
-      x: () => (Math.random() - 0.5) * 400,
-      y: () => (Math.random() - 0.5) * 300,
-      scale: 1,
-      ease: "power2.inOut",
-      stagger: 0.02
-    }, "-=0.5")
     // Continuous floating animation
     .to(particleElements, {
       duration: 8,
@@ -129,14 +120,14 @@ const NebulaBackground = ({ isHovered }: NebulaBackgroundProps) => {
         }
       });
       
-      // Add swirl motion
+      // Add slow, fluid nebula swirl motion
       gsap.to(particles, {
-        duration: 2,
-        rotation: "+=180",
-        x: () => (Math.random() - 0.5) * 100,
-        y: () => (Math.random() - 0.5) * 100,
-        ease: "power1.inOut",
-        stagger: 0.05
+        duration: 4,
+        rotation: "+=60",
+        x: () => (Math.random() - 0.5) * 50,
+        y: () => (Math.random() - 0.5) * 50,
+        ease: "sine.inOut",
+        stagger: 0.1
       });
     } else {
       // Return to normal state
