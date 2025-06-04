@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import HeroBackground from './HeroBackground';
+import NebulaBackground from './NebulaBackground';
 import gsap from 'gsap';
 
 const Hero = () => {
@@ -71,6 +72,7 @@ const Hero = () => {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden bg-apple-black">
       <HeroBackground />
+      <NebulaBackground isHovered={isNameHovered} />
       <div className="container z-10">
         <div className="max-w-4xl mx-auto text-center relative">
           <h1 
