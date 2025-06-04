@@ -1,165 +1,180 @@
-import React, { useRef, useMemo, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
-import * as THREE from 'three';
-
-interface NebulaParticlesProps {
-  isHovered: boolean;
-  animationPhase: 'burst' | 'settle' | 'static';
-}
-
-const NebulaParticles = ({ isHovered, animationPhase }: NebulaParticlesProps) => {
-  const ref = useRef<THREE.Points>(null);
-  const particleCount = 2000;
-  
-  const [positions, colors] = useMemo(() => {
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    
-    // Create spiral galaxy-like distribution
-    for (let i = 0; i < particleCount; i++) {
-      const i3 = i * 3;
-      
-      // Spiral galaxy pattern
-      const radius = Math.random() * 4 + 0.5;
-      const angle = Math.random() * Math.PI * 2;
-      const spiralOffset = radius * 0.5;
-      
-      positions[i3] = Math.cos(angle + spiralOffset) * radius + (Math.random() - 0.5) * 2;
-      positions[i3 + 1] = (Math.random() - 0.5) * 3;
-      positions[i3 + 2] = Math.sin(angle + spiralOffset) * radius + (Math.random() - 0.5) * 2;
-      
-      // Color gradient from blue to teal to white
-      const colorVariant = Math.random();
-      if (colorVariant < 0.4) {
-        // Blue tones
-        colors[i3] = 0.2 + Math.random() * 0.3; // R
-        colors[i3 + 1] = 0.4 + Math.random() * 0.4; // G
-        colors[i3 + 2] = 0.8 + Math.random() * 0.2; // B
-      } else if (colorVariant < 0.7) {
-        // Teal tones
-        colors[i3] = 0.1 + Math.random() * 0.2; // R
-        colors[i3 + 1] = 0.6 + Math.random() * 0.3; // G
-        colors[i3 + 2] = 0.7 + Math.random() * 0.3; // B
-      } else {
-        // White/light tones
-        colors[i3] = 0.8 + Math.random() * 0.2; // R
-        colors[i3 + 1] = 0.9 + Math.random() * 0.1; // G
-        colors[i3 + 2] = 1.0; // B
-      }
-    }
-    
-    return [positions, colors];
-  }, []);
-
-  useFrame((state) => {
-    if (!ref.current) return;
-    
-    const time = state.clock.getElapsedTime();
-    const positions = ref.current.geometry.attributes.position.array as Float32Array;
-    
-    // Rotation and movement
-    ref.current.rotation.y = time * 0.1;
-    ref.current.rotation.z = Math.sin(time * 0.2) * 0.1;
-    
-    // Hover effect - ripple distortion
-    if (isHovered) {
-      for (let i = 0; i < particleCount; i++) {
-        const i3 = i * 3;
-        const x = positions[i3];
-        const z = positions[i3 + 2];
-        const distance = Math.sqrt(x * x + z * z);
-        
-        // Create ripple effect
-        const ripple = Math.sin(distance * 2 - time * 4) * 0.1;
-        positions[i3 + 1] += ripple * 0.1;
-      }
-      ref.current.geometry.attributes.position.needsUpdate = true;
-    }
-    
-    // Burst animation
-    if (animationPhase === 'burst') {
-      const burstProgress = Math.min(time / 1.5, 1);
-      const scale = 0.3 + burstProgress * 0.7;
-      ref.current.scale.setScalar(scale);
-      
-      // Expand particles outward during burst
-      for (let i = 0; i < particleCount; i++) {
-        const i3 = i * 3;
-        const expansionFactor = burstProgress * 0.5;
-        positions[i3] *= (1 + expansionFactor * Math.random() * 0.3);
-        positions[i3 + 2] *= (1 + expansionFactor * Math.random() * 0.3);
-      }
-      ref.current.geometry.attributes.position.needsUpdate = true;
-    }
-    
-    // Subtle pulsing in static phase
-    if (animationPhase === 'static') {
-      const pulse = 1 + Math.sin(time * 0.5) * 0.05;
-      ref.current.scale.setScalar(pulse);
-    }
-  });
-
-  return (
-    <Points ref={ref} positions={positions} colors={colors}>
-      <PointMaterial
-        transparent
-        opacity={0.8}
-        size={0.05}
-        sizeAttenuation={true}
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        vertexColors
-      />
-    </Points>
-  );
-};
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 
 interface NebulaBackgroundProps {
   isHovered: boolean;
 }
 
 const NebulaBackground = ({ isHovered }: NebulaBackgroundProps) => {
-  const [animationPhase, setAnimationPhase] = React.useState<'burst' | 'settle' | 'static'>('burst');
-  
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [particles, setParticles] = useState<HTMLElement[]>([]);
+
   useEffect(() => {
-    // Transition through animation phases
-    const burstTimer = setTimeout(() => setAnimationPhase('settle'), 1500);
-    const settleTimer = setTimeout(() => setAnimationPhase('static'), 2000);
-    
+    if (!containerRef.current) return;
+
+    // Create particles
+    const particleElements: HTMLElement[] = [];
+    const particleCount = 80;
+
+    // Clear any existing particles
+    containerRef.current.innerHTML = '';
+
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'absolute rounded-full pointer-events-none';
+      
+      // Random size between 2px and 8px
+      const size = 2 + Math.random() * 6;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      
+      // Random color from sci-fi palette
+      const colors = [
+        'rgba(0, 170, 255, 0.8)',  // Blue
+        'rgba(0, 255, 255, 0.6)',  // Cyan
+        'rgba(255, 255, 255, 0.4)', // White
+        'rgba(100, 200, 255, 0.7)', // Light blue
+        'rgba(0, 200, 200, 0.5)'   // Teal
+      ];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.backgroundColor = color;
+      particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+      
+      // Initial position (center)
+      particle.style.left = '50%';
+      particle.style.top = '50%';
+      particle.style.transform = 'translate(-50%, -50%)';
+      particle.style.opacity = '0';
+      
+      containerRef.current.appendChild(particle);
+      particleElements.push(particle);
+    }
+
+    setParticles(particleElements);
+
+    // Burst animation
+    const tl = gsap.timeline();
+
+    // Initial burst - particles explode outward
+    tl.to(particleElements, {
+      duration: 1.5,
+      opacity: 1,
+      x: () => (Math.random() - 0.5) * 800,
+      y: () => (Math.random() - 0.5) * 600,
+      scale: () => 0.5 + Math.random() * 1.5,
+      ease: "power3.out",
+      stagger: {
+        amount: 0.3,
+        from: "center"
+      }
+    })
+    // Settle into nebula formation
+    .to(particleElements, {
+      duration: 1,
+      x: () => (Math.random() - 0.5) * 400,
+      y: () => (Math.random() - 0.5) * 300,
+      scale: 1,
+      ease: "power2.inOut",
+      stagger: 0.02
+    }, "-=0.5")
+    // Continuous floating animation
+    .to(particleElements, {
+      duration: 8,
+      x: "+=20",
+      y: "+=15",
+      rotation: 360,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+      stagger: {
+        amount: 2,
+        from: "random"
+      }
+    });
+
+    // Add subtle pulsing
+    gsap.to(particleElements, {
+      duration: 3,
+      opacity: 0.3,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      stagger: {
+        amount: 1,
+        from: "random"
+      }
+    });
+
     return () => {
-      clearTimeout(burstTimer);
-      clearTimeout(settleTimer);
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+      }
     };
   }, []);
-  
-  return (
-    <div className="absolute inset-0 -z-10">
-      <Canvas
-        camera={{ position: [0, 0, 8], fov: 60 }}
-        style={{ background: 'transparent' }}
-      >
-        <ambientLight intensity={0.2} />
-        <pointLight position={[0, 0, 5]} intensity={0.5} color="#00aaff" />
-        <NebulaParticles isHovered={isHovered} animationPhase={animationPhase} />
-        
-        {/* Additional glow effect */}
-        <mesh position={[0, 0, -2]}>
-          <sphereGeometry args={[3, 32, 32]} />
-          <meshBasicMaterial
-            color="#0080ff"
-            transparent
-            opacity={0.1}
-            blending={THREE.AdditiveBlending}
-          />
-        </mesh>
-      </Canvas>
+
+  // Hover effect
+  useEffect(() => {
+    if (!particles.length) return;
+
+    if (isHovered) {
+      // Ripple effect on hover
+      gsap.to(particles, {
+        duration: 0.5,
+        scale: 1.5,
+        opacity: 1,
+        ease: "power2.out",
+        stagger: {
+          amount: 0.3,
+          from: "center"
+        }
+      });
       
-      {/* Gradient overlay for depth */}
+      // Add swirl motion
+      gsap.to(particles, {
+        duration: 2,
+        rotation: "+=180",
+        x: () => (Math.random() - 0.5) * 100,
+        y: () => (Math.random() - 0.5) * 100,
+        ease: "power1.inOut",
+        stagger: 0.05
+      });
+    } else {
+      // Return to normal state
+      gsap.to(particles, {
+        duration: 0.8,
+        scale: 1,
+        opacity: 0.6,
+        ease: "power2.out",
+        stagger: 0.02
+      });
+    }
+  }, [isHovered, particles]);
+
+  return (
+    <div className="absolute inset-0 -z-5 overflow-hidden pointer-events-none">
+      {/* Main nebula container */}
+      <div 
+        ref={containerRef}
+        className="absolute inset-0"
+        style={{
+          background: 'radial-gradient(circle at center, rgba(0, 170, 255, 0.1) 0%, transparent 70%)'
+        }}
+      />
+      
+      {/* Additional glow layers */}
+      <div 
+        className="absolute inset-0 opacity-40"
+        style={{
+          background: 'radial-gradient(circle at 45% 55%, rgba(0, 255, 255, 0.15) 0%, transparent 60%)',
+          animation: 'pulse 4s ease-in-out infinite'
+        }}
+      />
+      
       <div 
         className="absolute inset-0 opacity-30"
         style={{
-          background: 'radial-gradient(circle at center, transparent 20%, rgba(0, 0, 0, 0.8) 80%)'
+          background: 'radial-gradient(circle at 55% 45%, rgba(100, 200, 255, 0.1) 0%, transparent 50%)',
+          animation: 'pulse 6s ease-in-out infinite reverse'
         }}
       />
     </div>
