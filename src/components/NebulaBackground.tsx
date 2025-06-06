@@ -18,14 +18,18 @@ function ParticleNebula({ isHovered }: { isHovered: boolean }) {
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
       
-      // Create a nebula-like distribution
-      const radius = Math.random() * 8 + 2;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.random() * Math.PI;
+      // Create organic nebula shape with spiral arms
+      const angle = Math.random() * Math.PI * 2;
+      const radius = Math.pow(Math.random(), 0.4) * 8; // More density in center
+      const height = (Math.random() - 0.5) * 4;
       
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = radius * Math.cos(phi);
+      // Add spiral arms and organic noise
+      const spiralFactor = Math.sin(angle * 2.5 + radius * 0.3) * 1.5;
+      const organicNoise = (Math.random() - 0.5) * 3;
+      
+      positions[i3] = Math.cos(angle) * radius + spiralFactor + organicNoise * 0.5;
+      positions[i3 + 1] = height + Math.sin(radius * 0.2) * 2 + organicNoise * 0.3;
+      positions[i3 + 2] = Math.sin(angle) * radius + spiralFactor * 0.7 + organicNoise * 0.5;
     }
     
     return positions;
@@ -59,9 +63,9 @@ function ParticleNebula({ isHovered }: { isHovered: boolean }) {
     <Points ref={pointsRef} positions={positions}>
       <PointMaterial
         size={0.05}
-        color="#00aaff"
+        color="#0080ff"
         transparent
-        opacity={0.6}
+        opacity={0.7}
         sizeAttenuation
         depthWrite={false}
         blending={THREE.AdditiveBlending}
@@ -109,26 +113,27 @@ const NebulaBackground = ({ isHovered }: NebulaBackgroundProps) => {
         <ParticleStars />
         <ParticleNebula isHovered={isHovered} />
         
-        {/* Additional nebula layers with different colors */}
+        {/* Additional nebula layers with vibrant colors */}
         <Points positions={useMemo(() => {
           const positions = new Float32Array(1000 * 3);
           for (let i = 0; i < 1000; i++) {
             const i3 = i * 3;
-            const radius = Math.random() * 6 + 1;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.random() * Math.PI;
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.pow(Math.random(), 0.5) * 6;
+            const height = (Math.random() - 0.5) * 3;
+            const spiralOffset = Math.sin(angle * 3 + radius * 0.4) * 1.2;
             
-            positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-            positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-            positions[i3 + 2] = radius * Math.cos(phi);
+            positions[i3] = Math.cos(angle) * radius + spiralOffset;
+            positions[i3 + 1] = height + Math.sin(radius * 0.3) * 1.5;
+            positions[i3 + 2] = Math.sin(angle) * radius + spiralOffset * 0.6;
           }
           return positions;
         }, [])}>
           <PointMaterial
             size={0.03}
-            color="#00ffff"
+            color="#ff0099"
             transparent
-            opacity={0.4}
+            opacity={0.5}
             sizeAttenuation
             depthWrite={false}
             blending={THREE.AdditiveBlending}
@@ -139,21 +144,22 @@ const NebulaBackground = ({ isHovered }: NebulaBackgroundProps) => {
           const positions = new Float32Array(800 * 3);
           for (let i = 0; i < 800; i++) {
             const i3 = i * 3;
-            const radius = Math.random() * 4 + 1;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.random() * Math.PI;
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.pow(Math.random(), 0.6) * 4;
+            const height = (Math.random() - 0.5) * 2;
+            const spiralOffset = Math.cos(angle * 2 + radius * 0.5) * 0.8;
             
-            positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-            positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-            positions[i3 + 2] = radius * Math.cos(phi);
+            positions[i3] = Math.cos(angle) * radius + spiralOffset;
+            positions[i3 + 1] = height + Math.sin(radius * 0.4) * 1;
+            positions[i3 + 2] = Math.sin(angle) * radius + spiralOffset * 0.5;
           }
           return positions;
         }, [])}>
           <PointMaterial
             size={0.08}
-            color="#64c8ff"
+            color="#6600ff"
             transparent
-            opacity={0.3}
+            opacity={0.4}
             sizeAttenuation
             depthWrite={false}
             blending={THREE.AdditiveBlending}
@@ -163,9 +169,9 @@ const NebulaBackground = ({ isHovered }: NebulaBackgroundProps) => {
       
       {/* Background gradient overlay */}
       <div 
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-25"
         style={{
-          background: 'radial-gradient(circle at center, rgba(0, 170, 255, 0.1) 0%, transparent 70%)'
+          background: 'radial-gradient(ellipse 80% 60% at center, rgba(102, 0, 255, 0.15) 0%, rgba(0, 128, 255, 0.1) 40%, transparent 70%)'
         }}
       />
     </div>
